@@ -49,43 +49,43 @@ const CONTROL_DEFAULTS: ControlGains = {
 }
 
 const introBody: ReactNode = (
-  <div className="space-y-4 text-sm leading-relaxed text-slate-300">
+  <div className="space-y-4 text-sm leading-relaxed text-slate-600">
     <p>
-      このデモでは、<strong className="text-slate-100">1関節のロボットアーム</strong>
-      を題材に、PID制御を <span className="text-sky-300">P</span> →{' '}
-      <span className="text-sky-300">PD</span> → <span className="text-sky-300">PID</span>{' '}
+      このデモでは、<strong className="text-slate-900">1関節のロボットアーム</strong>
+      を題材に、PID制御を <span className="text-sky-600">P</span> →{' '}
+      <span className="text-sky-600">PD</span> → <span className="text-sky-600">PID</span>{' '}
       と一段ずつ積み上げて理解します。
     </p>
     <p>
       アームはモーターのトルクで回転し、目標角度（黄色い破線）へ向かわせます。やっかいなのは
-      <strong className="text-slate-100">重力</strong>です。アームを水平付近で支えるには常に一定の
+      <strong className="text-slate-900">重力</strong>です。アームを水平付近で支えるには常に一定の
       トルクが必要で、これが「外乱」として制御を難しくします。
     </p>
-    <div className="rounded-lg bg-slate-800/50 p-4 ring-1 ring-white/5">
-      <p className="mb-2 font-semibold text-slate-100">制御の基本式</p>
-      <p className="font-mono text-sky-200">
+    <div className="rounded-lg bg-slate-50 p-4 ring-1 ring-slate-200">
+      <p className="mb-2 font-semibold text-slate-900">制御の基本式</p>
+      <p className="font-mono text-sky-700">
         u = Kp·e + Ki·∫e dt + Kd·de/dt
       </p>
-      <p className="mt-2 text-xs text-slate-400">
+      <p className="mt-2 text-xs text-slate-500">
         e = 目標角度 − 現在角度（誤差）。u がモーターへ与えるトルク指令です。
       </p>
     </div>
     <ul className="space-y-2">
       <li>
-        <span className="font-mono font-bold text-sky-300">P（比例）</span>
+        <span className="font-mono font-bold text-sky-600">P（比例）</span>
         ：今の誤差に比例して押す。大きいほど速いが、行き過ぎて振動しやすい。
       </li>
       <li>
-        <span className="font-mono font-bold text-purple-300">D（微分）</span>
+        <span className="font-mono font-bold text-violet-600">D（微分）</span>
         ：誤差の変化の速さにブレーキをかける。振動を抑え、落ち着かせる。
       </li>
       <li>
-        <span className="font-mono font-bold text-emerald-300">I（積分）</span>
+        <span className="font-mono font-bold text-emerald-600">I（積分）</span>
         ：誤差を時間で積み上げて押す。残ってしまう定常偏差をゼロにする。
       </li>
     </ul>
-    <p className="text-slate-400">
-      各ステップでは、右側の<strong className="text-slate-200">「トルクの内訳」</strong>
+    <p className="text-slate-500">
+      各ステップでは、右側の<strong className="text-slate-700">「トルクの内訳」</strong>
       バーで P・I・D それぞれが今どれだけ働いているかを見られます。まずは「P制御」へ進みましょう。
     </p>
   </div>
@@ -108,19 +108,19 @@ export const STEPS: Step[] = [
     active: { kp: true, ki: false, kd: false },
     defaults: { kp: 10, ki: 0, kd: 0 },
     body: (
-      <div className="space-y-3 text-sm leading-relaxed text-slate-300">
+      <div className="space-y-3 text-sm leading-relaxed text-slate-600">
         <p>
-          トルク指令は <span className="font-mono text-sky-200">u = Kp·e</span> だけ。誤差 e が大きいほど
+          トルク指令は <span className="font-mono text-sky-700">u = Kp·e</span> だけ。誤差 e が大きいほど
           強く押し、目標に近づくほど弱くなります。
         </p>
         <p>
-          Kp を上げると速く反応しますが、勢い余って<strong className="text-slate-100">行き過ぎ（オーバーシュート）</strong>
-          、そのまま<strong className="text-slate-100">振動</strong>します。逆に小さいとゆっくりで弱々しい。
+          Kp を上げると速く反応しますが、勢い余って<strong className="text-slate-900">行き過ぎ（オーバーシュート）</strong>
+          、そのまま<strong className="text-slate-900">振動</strong>します。逆に小さいとゆっくりで弱々しい。
         </p>
         <p>
           さらに重要なのが、目標角度にぴったり止まらず
-          <strong className="text-amber-300">わずかに手前で止まる</strong>こと。重力を支えるトルクを出すには
-          誤差 e がゼロでは足りないからです。これを<strong className="text-amber-300">定常偏差</strong>と呼びます。
+          <strong className="text-amber-600">わずかに手前で止まる</strong>こと。重力を支えるトルクを出すには
+          誤差 e がゼロでは足りないからです。これを<strong className="text-amber-600">定常偏差</strong>と呼びます。
         </p>
       </div>
     ),
@@ -143,19 +143,19 @@ export const STEPS: Step[] = [
     active: { kp: true, ki: false, kd: true },
     defaults: { kp: 16, ki: 0, kd: 2.5 },
     body: (
-      <div className="space-y-3 text-sm leading-relaxed text-slate-300">
+      <div className="space-y-3 text-sm leading-relaxed text-slate-600">
         <p>
-          D項は <span className="font-mono text-purple-200">Kd·de/dt</span>、つまり誤差が縮まる
-          <strong className="text-slate-100">速さ</strong>に反応します。目標へ速く近づいているときほど強く
+          D項は <span className="font-mono text-violet-700">Kd·de/dt</span>、つまり誤差が縮まる
+          <strong className="text-slate-900">速さ</strong>に反応します。目標へ速く近づいているときほど強く
           ブレーキをかけ、行き過ぎを防ぎます。
         </p>
         <p>
           Dで振動が収まるので、P制御では振動して使えなかった
-          <strong className="text-slate-100">大きな Kp</strong>が使えるようになり、より速く・安定して目標へ
+          <strong className="text-slate-900">大きな Kp</strong>が使えるようになり、より速く・安定して目標へ
           到達できます。
         </p>
         <p>
-          ただし注意：PDでも<strong className="text-amber-300">定常偏差は残ったまま</strong>です。Dは「動いている
+          ただし注意：PDでも<strong className="text-amber-600">定常偏差は残ったまま</strong>です。Dは「動いている
           とき」しか効かず、止まってしまえば de/dt = 0。重力を支える一定トルクは作れません。
         </p>
       </div>
@@ -180,21 +180,21 @@ export const STEPS: Step[] = [
     defaults: { kp: 16, ki: 8, kd: 2.5 },
     antiWindup: true,
     body: (
-      <div className="space-y-3 text-sm leading-relaxed text-slate-300">
+      <div className="space-y-3 text-sm leading-relaxed text-slate-600">
         <p>
-          I項は <span className="font-mono text-emerald-200">Ki·∫e dt</span>。誤差が残っている限り
-          <strong className="text-slate-100">少しずつ積み上がり</strong>、ついには重力を支えるだけのトルクを
+          I項は <span className="font-mono text-emerald-700">Ki·∫e dt</span>。誤差が残っている限り
+          <strong className="text-slate-900">少しずつ積み上がり</strong>、ついには重力を支えるだけのトルクを
           自分で作り出します。すると誤差はゼロへ。
         </p>
         <p>
           グラフで青線がゆっくり黄破線へ吸い付いていき、
-          <strong className="text-emerald-300">定常偏差が消える</strong>様子を見てください。停止後も I バーだけが
+          <strong className="text-emerald-600">定常偏差が消える</strong>様子を見てください。停止後も I バーだけが
           残って一定トルクを出し続けます。
         </p>
         <p>
           副作用もあります。Ki が大きすぎると積み上げすぎて
-          <strong className="text-amber-300">再び行き過ぎ・振動</strong>します。また飽和が長引くと積分が膨らむ
-          <strong className="text-amber-300">ワインドアップ</strong>が起きます。下のチェックでアンチワインドアップを
+          <strong className="text-amber-600">再び行き過ぎ・振動</strong>します。また飽和が長引くと積分が膨らむ
+          <strong className="text-amber-600">ワインドアップ</strong>が起きます。下のチェックでアンチワインドアップを
           切ると、その悪化を体感できます。
         </p>
       </div>
@@ -219,11 +219,11 @@ export const STEPS: Step[] = [
     defaults: { kp: 16, ki: 8, kd: 2.5 },
     antiWindup: true,
     body: (
-      <div className="space-y-3 text-sm leading-relaxed text-slate-300">
+      <div className="space-y-3 text-sm leading-relaxed text-slate-600">
         <p>
-          良い制御とは、<strong className="text-slate-100">速さ（立ち上がり）</strong>・
-          <strong className="text-slate-100">安定性（振動の少なさ）</strong>・
-          <strong className="text-slate-100">正確さ（定常偏差ゼロ）</strong>のバランスです。三者はしばしば
+          良い制御とは、<strong className="text-slate-900">速さ（立ち上がり）</strong>・
+          <strong className="text-slate-900">安定性（振動の少なさ）</strong>・
+          <strong className="text-slate-900">正確さ（定常偏差ゼロ）</strong>のバランスです。三者はしばしば
           トレードオフの関係にあります。
         </p>
         <p>
@@ -248,44 +248,44 @@ export const STEPS: Step[] = [
     nav: '力制御とは',
     title: '位置制御から「力／接触」の制御へ',
     body: (
-      <div className="space-y-4 text-sm leading-relaxed text-slate-300">
+      <div className="space-y-4 text-sm leading-relaxed text-slate-600">
         <p>
-          ここまでの PID は<strong className="text-slate-100">位置制御</strong>でした。狙いは
-          「外乱を打ち消して、目標角度に<strong className="text-slate-100">硬く・正確に</strong>止める」こと。
+          ここまでの PID は<strong className="text-slate-900">位置制御</strong>でした。狙いは
+          「外乱を打ち消して、目標角度に<strong className="text-slate-900">硬く・正確に</strong>止める」こと。
           押されても動かない＝硬いほど良い制御です。
         </p>
         <p>
-          ところが人やモノに<strong className="text-slate-100">接触</strong>するロボット（協働ロボット、
+          ところが人やモノに<strong className="text-slate-900">接触</strong>するロボット（協働ロボット、
           研磨、組立、リハビリ機器…）では話が逆になります。硬すぎると、ぶつかった瞬間に大きな力が
           出て危険・破損につながる。ここで必要なのが、動きと力の関係＝
-          <strong className="text-emerald-300">機械インピーダンス</strong>そのものを設計する
-          <strong className="text-slate-100">力／接触の制御</strong>です。
+          <strong className="text-emerald-600">機械インピーダンス</strong>そのものを設計する
+          <strong className="text-slate-900">力／接触の制御</strong>です。
         </p>
-        <div className="rounded-lg bg-slate-800/50 p-4 ring-1 ring-white/5">
-          <p className="mb-2 font-semibold text-slate-100">2つのアプローチ（双対）</p>
+        <div className="rounded-lg bg-slate-50 p-4 ring-1 ring-slate-200">
+          <p className="mb-2 font-semibold text-slate-900">2つのアプローチ（双対）</p>
           <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
             <div>
-              <p className="font-mono font-bold text-sky-300">インピーダンス制御</p>
-              <p className="mt-1 text-xs text-slate-400">
-                <span className="text-slate-200">変位・速度 → 力</span> を出す。
-                力は測らない。トルク制御で「<strong className="text-slate-200">仮想バネ・ダンパ</strong>」になる。
+              <p className="font-mono font-bold text-sky-600">インピーダンス制御</p>
+              <p className="mt-1 text-xs text-slate-500">
+                <span className="text-slate-700">変位・速度 → 力</span> を出す。
+                力は測らない。トルク制御で「<strong className="text-slate-700">仮想バネ・ダンパ</strong>」になる。
                 バックドライブしやすい関節向き。
               </p>
             </div>
             <div>
-              <p className="font-mono font-bold text-pink-300">アドミタンス制御</p>
-              <p className="mt-1 text-xs text-slate-400">
-                <span className="text-slate-200">力 → 運動</span> を作る。
-                力センサで外力を測り「<strong className="text-slate-200">仮想質量・ダンパ</strong>」の運動を生成し、
+              <p className="font-mono font-bold text-pink-600">アドミタンス制御</p>
+              <p className="mt-1 text-xs text-slate-500">
+                <span className="text-slate-700">力 → 運動</span> を作る。
+                力センサで外力を測り「<strong className="text-slate-700">仮想質量・ダンパ</strong>」の運動を生成し、
                 内側の硬い位置ループで追従。硬い（非バックドライブ）ロボット向き。
               </p>
             </div>
           </div>
         </div>
         <p>
-          どちらも目標は「押されたら、決めた法則どおりに<strong className="text-slate-100">しなやかに従う</strong>」こと。
-          次の2章で、同じアームを<strong className="text-sky-300">バネ</strong>として、また
-          <strong className="text-pink-300">質量</strong>として振る舞わせ、
+          どちらも目標は「押されたら、決めた法則どおりに<strong className="text-slate-900">しなやかに従う</strong>」こと。
+          次の2章で、同じアームを<strong className="text-sky-600">バネ</strong>として、また
+          <strong className="text-pink-600">質量</strong>として振る舞わせ、
           「外力（押す力）」スライダーで実際に押して比べてみましょう。
         </p>
       </div>
@@ -302,21 +302,21 @@ export const STEPS: Step[] = [
     defaults: CONTROL_DEFAULTS,
     gravityComp: true,
     body: (
-      <div className="space-y-3 text-sm leading-relaxed text-slate-300">
+      <div className="space-y-3 text-sm leading-relaxed text-slate-600">
         <p>
-          制御則は <span className="font-mono text-sky-200">τ = K·(θd−θ) − D·θ̇ + ĝ(θ)</span>。
-          目標まわりの<strong className="text-slate-100">仮想バネ K</strong>と
-          <strong className="text-slate-100">仮想ダンパ D</strong>、そして重力を肩代わりする
-          <strong className="text-emerald-300">重力補償 ĝ</strong>です。
+          制御則は <span className="font-mono text-sky-700">τ = K·(θd−θ) − D·θ̇ + ĝ(θ)</span>。
+          目標まわりの<strong className="text-slate-900">仮想バネ K</strong>と
+          <strong className="text-slate-900">仮想ダンパ D</strong>、そして重力を肩代わりする
+          <strong className="text-emerald-600">重力補償 ĝ</strong>です。
         </p>
         <p>
-          「外力」で押すと、つり合いは <span className="font-mono text-orange-200">変位 ≈ F / K</span>。
-          つまり <strong className="text-slate-100">K が小さいほど大きくたわみ、柔らかい</strong>。
-          ロボットは力を<strong className="text-slate-100">測っていない</strong>のに、バネの法則で勝手に従います。
+          「外力」で押すと、つり合いは <span className="font-mono text-orange-700">変位 ≈ F / K</span>。
+          つまり <strong className="text-slate-900">K が小さいほど大きくたわみ、柔らかい</strong>。
+          ロボットは力を<strong className="text-slate-900">測っていない</strong>のに、バネの法則で勝手に従います。
         </p>
         <p>
-          <strong className="text-amber-300">重力補償を切る</strong>と、バネだけでは重力を支えきれず
-          目標の手前で<strong className="text-amber-300">たわんで止まります</strong>（P制御の定常偏差と同じ理屈）。
+          <strong className="text-amber-600">重力補償を切る</strong>と、バネだけでは重力を支えきれず
+          目標の手前で<strong className="text-amber-600">たわんで止まります</strong>（P制御の定常偏差と同じ理屈）。
           ここで積分を足せば消せますが、それは「硬い位置制御」に逆戻り。インピーダンスでは
           あえて積分を使わず、補償トルクで支えるのがポイントです。
         </p>
@@ -345,21 +345,21 @@ export const STEPS: Step[] = [
     defaults: CONTROL_DEFAULTS,
     gravityComp: true,
     body: (
-      <div className="space-y-3 text-sm leading-relaxed text-slate-300">
+      <div className="space-y-3 text-sm leading-relaxed text-slate-600">
         <p>
-          こちらは<strong className="text-slate-100">力 → 運動</strong>の向き。測った外力で
-          <span className="font-mono text-pink-200">Mv·θ̈ᵣ + Dv·θ̇ᵣ + Kv·eᵣ = F</span> の
-          仮想ダイナミクスを解いて<strong className="text-slate-100">基準軌道 θᵣ</strong>を作り、
-          それを<strong className="text-slate-100">硬い内側ループ</strong>が忠実に追います。
+          こちらは<strong className="text-slate-900">力 → 運動</strong>の向き。測った外力で
+          <span className="font-mono text-pink-700">Mv·θ̈ᵣ + Dv·θ̇ᵣ + Kv·eᵣ = F</span> の
+          仮想ダイナミクスを解いて<strong className="text-slate-900">基準軌道 θᵣ</strong>を作り、
+          それを<strong className="text-slate-900">硬い内側ループ</strong>が忠実に追います。
         </p>
         <p>
-          結果、アームは本来の慣性とは無関係に「<strong className="text-pink-300">質量 Mv・粘り Dv</strong>の物体」
-          として手応えを返します。<strong className="text-slate-100">Mv が小さいほど軽々と動かせ</strong>、
+          結果、アームは本来の慣性とは無関係に「<strong className="text-pink-600">質量 Mv・粘り Dv</strong>の物体」
+          として手応えを返します。<strong className="text-slate-900">Mv が小さいほど軽々と動かせ</strong>、
           大きいほど重く鈍い。Dv を上げると手を離したとき素早く止まります。
         </p>
         <p>
-          押していないときは内側ループが<strong className="text-slate-100">硬く目標を保持</strong>します。
-          だからこそ、力を測れる<strong className="text-amber-300">力センサが前提</strong>で、
+          押していないときは内側ループが<strong className="text-slate-900">硬く目標を保持</strong>します。
+          だからこそ、力を測れる<strong className="text-amber-600">力センサが前提</strong>で、
           センサノイズや剛い接触には弱い——インピーダンスとは得手不得手が逆になります。
         </p>
       </div>

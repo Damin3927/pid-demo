@@ -32,10 +32,10 @@ function Btn({
   primary?: boolean
 }) {
   const base =
-    'rounded-lg px-3 py-2 text-sm font-medium transition active:scale-95 ring-1 ring-white/10'
+    'rounded-lg px-3 py-2 text-sm font-medium transition active:scale-95 ring-1'
   const style = primary
-    ? 'bg-sky-500/90 text-slate-950 hover:bg-sky-400'
-    : 'bg-slate-700/70 text-slate-100 hover:bg-slate-600/70'
+    ? 'bg-sky-600 text-white ring-sky-700/10 hover:bg-sky-500'
+    : 'bg-slate-100 text-slate-700 ring-slate-200 hover:bg-slate-200'
   return (
     <button type="button" className={`${base} ${style}`} onClick={onClick}>
       {children}
@@ -67,15 +67,15 @@ export function ControlSimControls({
     <div className="space-y-3">
       <div>
         <div className="mb-1 flex items-baseline justify-between">
-          <span className="text-sm text-slate-300">目標角度</span>
-          <span className="font-mono text-sm tabular-nums text-amber-300">
+          <span className="text-sm text-slate-700">目標角度</span>
+          <span className="font-mono text-sm tabular-nums text-amber-600">
             {targetDeg.toFixed(0)}°
           </span>
         </div>
         <input
           type="range"
           className="w-full"
-          style={{ '--thumb': '#facc15' } as CSSProperties}
+          style={{ '--thumb': '#d97706' } as CSSProperties}
           min={targetMinDeg}
           max={targetMaxDeg}
           step={1}
@@ -86,20 +86,20 @@ export function ControlSimControls({
 
       <div>
         <div className="mb-1 flex items-baseline justify-between">
-          <span className="text-sm text-slate-300">
+          <span className="text-sm text-slate-700">
             外力（押す力）
-            <span className="ml-1 text-xs text-slate-500">
+            <span className="ml-1 text-xs text-slate-400">
               {measuresForce ? 'センサで計測 → 制御に使う' : '制御は計測しない'}
             </span>
           </span>
-          <span className="font-mono text-sm tabular-nums text-orange-300">
+          <span className="font-mono text-sm tabular-nums text-orange-600">
             {signed(external, 1)} N·m
           </span>
         </div>
         <input
           type="range"
           className="w-full"
-          style={{ '--thumb': '#fb923c' } as CSSProperties}
+          style={{ '--thumb': '#ea580c' } as CSSProperties}
           min={externalMin}
           max={externalMax}
           step={externalStep}
@@ -118,10 +118,10 @@ export function ControlSimControls({
         <Btn onClick={onToggleSlowMo}>{slowMo ? '🐢 0.3倍速' : '⏱ 等速'}</Btn>
       </div>
 
-      <label className="flex cursor-pointer items-center gap-2 text-sm text-slate-300">
+      <label className="flex cursor-pointer items-center gap-2 text-sm text-slate-700">
         <input
           type="checkbox"
-          className="h-4 w-4 accent-emerald-400"
+          className="h-4 w-4 accent-emerald-600"
           checked={gravityComp}
           onChange={onToggleGravityComp}
         />

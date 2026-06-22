@@ -32,9 +32,9 @@ export function GainSlider({
           <span className="font-mono text-base font-bold" style={{ color }}>
             {symbol}
           </span>
-          <span className="text-sm text-slate-300">{name}</span>
+          <span className="text-sm text-slate-700">{name}</span>
         </div>
-        <span className="font-mono text-sm tabular-nums text-slate-100">{value.toFixed(1)}</span>
+        <span className="font-mono text-sm tabular-nums text-slate-900">{value.toFixed(1)}</span>
       </div>
       <input
         type="range"
@@ -47,7 +47,7 @@ export function GainSlider({
         disabled={disabled}
         onChange={(e) => onChange(Number(e.target.value))}
       />
-      <p className="mt-1 text-xs leading-relaxed text-slate-400">{description}</p>
+      <p className="mt-1 text-xs leading-relaxed text-slate-500">{description}</p>
     </div>
   )
 }

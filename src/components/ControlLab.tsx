@@ -22,8 +22,8 @@ import { signed } from '../lib/format.ts'
 
 function Card({ title, children }: { title?: string; children: ReactNode }) {
   return (
-    <div className="rounded-2xl bg-slate-900/50 p-4 ring-1 ring-white/5">
-      {title && <h3 className="mb-3 text-sm font-semibold text-slate-200">{title}</h3>}
+    <div className="rounded-2xl bg-white p-4 ring-1 ring-slate-200 shadow-sm">
+      {title && <h3 className="mb-3 text-sm font-semibold text-slate-800">{title}</h3>}
       {children}
     </div>
   )
@@ -44,7 +44,7 @@ const SLIDERS: SliderSpec[] = [
     symbol: 'K',
     name: '剛性（仮想バネ）',
     description: '硬さ。大きいほど押しても動かず、小さいほど柔らかく従う（コンプライアンス）。',
-    color: '#38bdf8',
+    color: '#0284c7',
     range: CONTROL_GAIN_RANGES.stiffness,
   },
   {
@@ -52,7 +52,7 @@ const SLIDERS: SliderSpec[] = [
     symbol: 'D',
     name: '減衰（仮想ダンパ）',
     description: '動きにかけるブレーキ。振動を抑えて落ち着かせる。',
-    color: '#c084fc',
+    color: '#7c3aed',
     range: CONTROL_GAIN_RANGES.damping,
   },
   {
@@ -60,7 +60,7 @@ const SLIDERS: SliderSpec[] = [
     symbol: 'Mv',
     name: '仮想質量',
     description: '感じさせたい重さ。小さいほど軽く動かせ、大きいほど重く鈍い。',
-    color: '#f472b6',
+    color: '#db2777',
     range: CONTROL_GAIN_RANGES.virtualMass,
   },
   {
@@ -68,7 +68,7 @@ const SLIDERS: SliderSpec[] = [
     symbol: 'Dv',
     name: '仮想減衰',
     description: '感じさせたい粘り。大きいほど手応えが重く、動きがすぐ止まる。',
-    color: '#fbbf24',
+    color: '#d97706',
     range: CONTROL_GAIN_RANGES.virtualDamping,
   },
 ]
@@ -106,8 +106,8 @@ export function ControlLab({ step }: { step: ControlStep }) {
   return (
     <div className="space-y-4">
       <div>
-        <h2 className="text-xl font-bold text-slate-100">{step.title}</h2>
-        <p className="mt-1 text-sm text-slate-400">{step.lead}</p>
+        <h2 className="text-xl font-bold text-slate-900">{step.title}</h2>
+        <p className="mt-1 text-sm text-slate-500">{step.lead}</p>
       </div>
 
       <div className="grid gap-4 lg:grid-cols-12">
@@ -153,7 +153,7 @@ export function ControlLab({ step }: { step: ControlStep }) {
 
         <div className="space-y-4 lg:col-span-5">
           <Card>
-            <div className="text-sm leading-relaxed text-slate-300">{step.body}</div>
+            <div className="text-sm leading-relaxed text-slate-600">{step.body}</div>
           </Card>
 
           <Card title="つまみ調整">
@@ -223,20 +223,20 @@ export function ControlLab({ step }: { step: ControlStep }) {
 
       <div className="grid gap-4 sm:grid-cols-2">
         <Card title="🔧 試してみよう">
-          <ul className="space-y-1.5 text-sm text-slate-300">
+          <ul className="space-y-1.5 text-sm text-slate-600">
             {step.tryThis.map((t) => (
               <li key={t} className="flex gap-2">
-                <span className="text-sky-400">›</span>
+                <span className="text-sky-600">›</span>
                 <span>{t}</span>
               </li>
             ))}
           </ul>
         </Card>
         <Card title="👀 注目ポイント">
-          <ul className="space-y-1.5 text-sm text-slate-300">
+          <ul className="space-y-1.5 text-sm text-slate-600">
             {step.watchFor.map((t) => (
               <li key={t} className="flex gap-2">
-                <span className="text-amber-400">›</span>
+                <span className="text-amber-600">›</span>
                 <span>{t}</span>
               </li>
             ))}

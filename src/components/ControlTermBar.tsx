@@ -9,9 +9,9 @@ interface ControlTermBarProps {
 }
 
 const COLORS = {
-  spring: '#38bdf8',
-  damper: '#c084fc',
-  gravity: '#34d399',
+  spring: '#0284c7',
+  damper: '#7c3aed',
+  gravity: '#059669',
 }
 
 interface RowProps {
@@ -34,12 +34,12 @@ function Row({ label, symbol, value, maxTorque, color, dim }: RowProps) {
           <span className="font-mono font-bold" style={{ color }}>
             {symbol}
           </span>{' '}
-          <span className="text-slate-400">{label}</span>
+          <span className="text-slate-500">{label}</span>
         </span>
-        <span className="font-mono tabular-nums text-slate-200">{signed(value, 2)}</span>
+        <span className="font-mono tabular-nums text-slate-800">{signed(value, 2)}</span>
       </div>
-      <div className="relative h-3 w-full rounded bg-slate-800">
-        <div className="absolute top-0 bottom-0 left-1/2 w-px bg-slate-600" />
+      <div className="relative h-3 w-full rounded bg-slate-100">
+        <div className="absolute top-0 bottom-0 left-1/2 w-px bg-slate-300" />
         <div
           className="absolute top-0 bottom-0 rounded"
           style={{ left: `${leftPct}%`, width: `${widthPct}%`, backgroundColor: color }}
@@ -55,10 +55,10 @@ export function ControlTermBar({ terms, maxTorque, mode, gravityComp }: ControlT
   return (
     <div className="space-y-3">
       <div className="flex items-baseline justify-between">
-        <h4 className="text-sm font-semibold text-slate-200">トルクの内訳</h4>
-        <span className="font-mono text-xs tabular-nums text-slate-400">
+        <h4 className="text-sm font-semibold text-slate-800">トルクの内訳</h4>
+        <span className="font-mono text-xs tabular-nums text-slate-500">
           合計 {signed(terms.applied, 2)} N·m
-          {terms.saturated && <span className="ml-1 text-red-400">(飽和)</span>}
+          {terms.saturated && <span className="ml-1 text-red-600">(飽和)</span>}
         </span>
       </div>
       <Row label={springLabel} symbol="K" value={terms.spring} maxTorque={maxTorque} color={COLORS.spring} />

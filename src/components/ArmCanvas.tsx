@@ -63,7 +63,7 @@ export function ArmCanvas({
     })
 
     // Reference horizon (0deg) and a faint protractor.
-    ctx.strokeStyle = 'rgba(148, 163, 184, 0.18)'
+    ctx.strokeStyle = 'rgba(100, 116, 139, 0.28)'
     ctx.lineWidth = 1
     ctx.beginPath()
     ctx.moveTo(pivot.x - armLen * 1.15, pivot.y)
@@ -76,7 +76,7 @@ export function ArmCanvas({
 
     // Target: ghost arm + tip marker.
     const tTip = tip(target)
-    ctx.strokeStyle = 'rgba(250, 204, 21, 0.55)'
+    ctx.strokeStyle = 'rgba(217, 119, 6, 0.6)'
     ctx.setLineDash([6, 6])
     ctx.lineWidth = 3
     ctx.beginPath()
@@ -84,18 +84,18 @@ export function ArmCanvas({
     ctx.lineTo(tTip.x, tTip.y)
     ctx.stroke()
     ctx.setLineDash([])
-    ctx.fillStyle = 'rgba(250, 204, 21, 0.95)'
+    ctx.fillStyle = 'rgba(217, 119, 6, 0.95)'
     ctx.beginPath()
     ctx.arc(tTip.x, tTip.y, 6, 0, Math.PI * 2)
     ctx.fill()
     ctx.font = '12px system-ui, sans-serif'
-    ctx.fillStyle = 'rgba(250, 204, 21, 0.95)'
+    ctx.fillStyle = 'rgba(217, 119, 6, 0.95)'
     ctx.fillText(`目標 ${(target * DEG).toFixed(0)}°`, tTip.x + 10, tTip.y - 6)
 
     // Applied-torque arc at the pivot (sweep proportional to torque, sign = direction).
     const torqueFrac = Math.max(-1, Math.min(1, applied / maxTorque))
     if (Math.abs(torqueFrac) > 0.01) {
-      ctx.strokeStyle = saturated ? '#f87171' : 'rgba(56, 189, 248, 0.85)'
+      ctx.strokeStyle = saturated ? '#dc2626' : 'rgba(2, 132, 199, 0.9)'
       ctx.lineWidth = 5
       ctx.beginPath()
       const sweep = torqueFrac * Math.PI * 0.9
@@ -106,8 +106,8 @@ export function ArmCanvas({
     // Current arm.
     const cTip = tip(theta)
     const grad = ctx.createLinearGradient(pivot.x, pivot.y, cTip.x, cTip.y)
-    grad.addColorStop(0, '#0ea5e9')
-    grad.addColorStop(1, '#7dd3fc')
+    grad.addColorStop(0, '#0369a1')
+    grad.addColorStop(1, '#0ea5e9')
     ctx.strokeStyle = grad
     ctx.lineWidth = 10
     ctx.lineCap = 'round'
@@ -117,7 +117,7 @@ export function ArmCanvas({
     ctx.stroke()
 
     // Gravity hint at the tip.
-    ctx.strokeStyle = 'rgba(148, 163, 184, 0.7)'
+    ctx.strokeStyle = 'rgba(100, 116, 139, 0.85)'
     ctx.lineWidth = 2
     ctx.beginPath()
     ctx.moveTo(cTip.x, cTip.y)
@@ -128,7 +128,7 @@ export function ArmCanvas({
     ctx.lineTo(cTip.x, cTip.y + 26)
     ctx.lineTo(cTip.x + 4, cTip.y + 20)
     ctx.stroke()
-    ctx.fillStyle = 'rgba(148, 163, 184, 0.7)'
+    ctx.fillStyle = 'rgba(100, 116, 139, 0.85)'
     ctx.fillText('重力', cTip.x + 8, cTip.y + 24)
 
     // External push: a tangential arrow at the tip, length ~ applied force.
@@ -140,8 +140,8 @@ export function ArmCanvas({
       const len = 18 + Math.abs(extFrac) * 46
       const base = { x: cTip.x - tan.x * dir * len, y: cTip.y - tan.y * dir * len }
       const head = { x: cTip.x, y: cTip.y }
-      ctx.strokeStyle = '#fb923c'
-      ctx.fillStyle = '#fb923c'
+      ctx.strokeStyle = '#ea580c'
+      ctx.fillStyle = '#ea580c'
       ctx.lineWidth = 4
       ctx.lineCap = 'round'
       ctx.beginPath()
@@ -160,32 +160,32 @@ export function ArmCanvas({
     }
 
     // Tip joint + pivot hub.
-    ctx.fillStyle = '#e0f2fe'
+    ctx.fillStyle = '#0ea5e9'
     ctx.beginPath()
     ctx.arc(cTip.x, cTip.y, 9, 0, Math.PI * 2)
     ctx.fill()
-    ctx.fillStyle = '#1e293b'
+    ctx.fillStyle = '#ffffff'
     ctx.beginPath()
     ctx.arc(cTip.x, cTip.y, 4, 0, Math.PI * 2)
     ctx.fill()
 
-    ctx.fillStyle = '#475569'
+    ctx.fillStyle = '#64748b'
     ctx.beginPath()
     ctx.arc(pivot.x, pivot.y, 14, 0, Math.PI * 2)
     ctx.fill()
-    ctx.fillStyle = '#0f172a'
+    ctx.fillStyle = '#334155'
     ctx.beginPath()
     ctx.arc(pivot.x, pivot.y, 6, 0, Math.PI * 2)
     ctx.fill()
 
     // Current angle readout.
-    ctx.fillStyle = '#7dd3fc'
+    ctx.fillStyle = '#0369a1'
     ctx.font = '600 15px system-ui, sans-serif'
     ctx.fillText(`${(theta * DEG).toFixed(1)}°`, pivot.x + 18, pivot.y + 30)
   }, [theta, target, applied, maxTorque, saturated, external])
 
   return (
-    <div className="relative h-[320px] w-full overflow-hidden rounded-xl bg-slate-950/60 ring-1 ring-white/5">
+    <div className="relative h-[320px] w-full overflow-hidden rounded-xl bg-slate-50 ring-1 ring-slate-200">
       <canvas ref={canvasRef} className="block" />
     </div>
   )

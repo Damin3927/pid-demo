@@ -18,23 +18,23 @@ export function Stepper({ labels, current, onSelect }: StepperProps) {
               className={[
                 'flex items-center gap-2 rounded-full px-3 py-1.5 text-sm font-medium transition',
                 isCurrent
-                  ? 'bg-sky-500 text-slate-950'
+                  ? 'bg-sky-600 text-white shadow-sm'
                   : isDone
-                    ? 'bg-slate-700 text-slate-200 hover:bg-slate-600'
-                    : 'bg-slate-800/70 text-slate-400 hover:bg-slate-700/70',
+                    ? 'bg-slate-200 text-slate-700 hover:bg-slate-300'
+                    : 'bg-slate-100 text-slate-400 hover:bg-slate-200',
               ].join(' ')}
             >
               <span
                 className={[
                   'flex h-5 w-5 items-center justify-center rounded-full text-xs font-bold',
-                  isCurrent ? 'bg-slate-950/30 text-slate-950' : 'bg-slate-900/60 text-slate-300',
+                  isCurrent ? 'bg-white/25 text-white' : 'bg-white text-slate-500 ring-1 ring-slate-200',
                 ].join(' ')}
               >
                 {idx + 1}
               </span>
               {label}
             </button>
-            {idx < labels.length - 1 && <span className="text-slate-600">→</span>}
+            {idx < labels.length - 1 && <span className="text-slate-300">→</span>}
           </div>
         )
       })}

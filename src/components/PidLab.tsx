@@ -20,8 +20,8 @@ import { signed } from '../lib/format.ts'
 
 function Card({ title, children }: { title?: string; children: ReactNode }) {
   return (
-    <div className="rounded-2xl bg-slate-900/50 p-4 ring-1 ring-white/5">
-      {title && <h3 className="mb-3 text-sm font-semibold text-slate-200">{title}</h3>}
+    <div className="rounded-2xl bg-white p-4 ring-1 ring-slate-200 shadow-sm">
+      {title && <h3 className="mb-3 text-sm font-semibold text-slate-800">{title}</h3>}
       {children}
     </div>
   )
@@ -56,8 +56,8 @@ export function PidLab({ step }: { step: LabStep }) {
   return (
     <div className="space-y-4">
       <div>
-        <h2 className="text-xl font-bold text-slate-100">{step.title}</h2>
-        <p className="mt-1 text-sm text-slate-400">{step.lead}</p>
+        <h2 className="text-xl font-bold text-slate-900">{step.title}</h2>
+        <p className="mt-1 text-sm text-slate-500">{step.lead}</p>
       </div>
 
       <div className="grid gap-4 lg:grid-cols-12">
@@ -94,7 +94,7 @@ export function PidLab({ step }: { step: LabStep }) {
 
         <div className="space-y-4 lg:col-span-5">
           <Card>
-            <div className="text-sm leading-relaxed text-slate-300">{step.body}</div>
+            <div className="text-sm leading-relaxed text-slate-600">{step.body}</div>
           </Card>
 
           <Card title="ゲイン調整">
@@ -107,7 +107,7 @@ export function PidLab({ step }: { step: LabStep }) {
                 min={GAIN_RANGES.kp.min}
                 max={GAIN_RANGES.kp.max}
                 step={GAIN_RANGES.kp.step}
-                color="#38bdf8"
+                color="#0284c7"
                 disabled={!step.active.kp}
                 onChange={setGain('kp')}
               />
@@ -119,7 +119,7 @@ export function PidLab({ step }: { step: LabStep }) {
                 min={GAIN_RANGES.ki.min}
                 max={GAIN_RANGES.ki.max}
                 step={GAIN_RANGES.ki.step}
-                color="#34d399"
+                color="#059669"
                 disabled={!step.active.ki}
                 onChange={setGain('ki')}
               />
@@ -131,7 +131,7 @@ export function PidLab({ step }: { step: LabStep }) {
                 min={GAIN_RANGES.kd.min}
                 max={GAIN_RANGES.kd.max}
                 step={GAIN_RANGES.kd.step}
-                color="#c084fc"
+                color="#7c3aed"
                 disabled={!step.active.kd}
                 onChange={setGain('kd')}
               />
@@ -181,20 +181,20 @@ export function PidLab({ step }: { step: LabStep }) {
 
       <div className="grid gap-4 sm:grid-cols-2">
         <Card title="🔧 試してみよう">
-          <ul className="space-y-1.5 text-sm text-slate-300">
+          <ul className="space-y-1.5 text-sm text-slate-600">
             {step.tryThis.map((t) => (
               <li key={t} className="flex gap-2">
-                <span className="text-sky-400">›</span>
+                <span className="text-sky-600">›</span>
                 <span>{t}</span>
               </li>
             ))}
           </ul>
         </Card>
         <Card title="👀 注目ポイント">
-          <ul className="space-y-1.5 text-sm text-slate-300">
+          <ul className="space-y-1.5 text-sm text-slate-600">
             {step.watchFor.map((t) => (
               <li key={t} className="flex gap-2">
-                <span className="text-amber-400">›</span>
+                <span className="text-amber-600">›</span>
                 <span>{t}</span>
               </li>
             ))}

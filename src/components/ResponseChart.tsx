@@ -80,20 +80,20 @@ export function ResponseChart({ history, windowSeconds }: ResponseChartProps) {
     ctx.textBaseline = 'middle'
     for (let deg = lo; deg <= hi + 0.001; deg += 15) {
       const y = yOf(deg)
-      ctx.strokeStyle = deg === 0 ? 'rgba(148,163,184,0.35)' : 'rgba(148,163,184,0.12)'
+      ctx.strokeStyle = deg === 0 ? 'rgba(100,116,139,0.45)' : 'rgba(100,116,139,0.15)'
       ctx.lineWidth = 1
       ctx.beginPath()
       ctx.moveTo(padL, y)
       ctx.lineTo(w - padR, y)
       ctx.stroke()
-      ctx.fillStyle = 'rgba(148,163,184,0.7)'
+      ctx.fillStyle = 'rgba(100,116,139,0.85)'
       ctx.textAlign = 'right'
       ctx.fillText(`${deg.toFixed(0)}`, padL - 6, y)
     }
 
     // Target line (dashed yellow).
     if (history.length > 1) {
-      ctx.strokeStyle = 'rgba(250, 204, 21, 0.85)'
+      ctx.strokeStyle = 'rgba(217, 119, 6, 0.9)'
       ctx.setLineDash([5, 5])
       ctx.lineWidth = 2
       ctx.beginPath()
@@ -107,7 +107,7 @@ export function ResponseChart({ history, windowSeconds }: ResponseChartProps) {
       ctx.setLineDash([])
 
       // Response line (cyan).
-      ctx.strokeStyle = '#38bdf8'
+      ctx.strokeStyle = '#0284c7'
       ctx.lineWidth = 2.5
       ctx.lineJoin = 'round'
       ctx.beginPath()
@@ -119,13 +119,13 @@ export function ResponseChart({ history, windowSeconds }: ResponseChartProps) {
       })
       ctx.stroke()
     } else {
-      ctx.fillStyle = 'rgba(148,163,184,0.6)'
+      ctx.fillStyle = 'rgba(100,116,139,0.7)'
       ctx.textAlign = 'center'
       ctx.fillText('再生すると応答が表示されます', w / 2, h / 2)
     }
 
     // Axis labels.
-    ctx.fillStyle = 'rgba(148,163,184,0.7)'
+    ctx.fillStyle = 'rgba(100,116,139,0.85)'
     ctx.textAlign = 'left'
     ctx.fillText('角度 [°]', padL - 34, padT - 2)
     ctx.textAlign = 'right'
@@ -133,7 +133,7 @@ export function ResponseChart({ history, windowSeconds }: ResponseChartProps) {
   }, [history, windowSeconds])
 
   return (
-    <div className="relative h-[200px] w-full overflow-hidden rounded-xl bg-slate-950/60 ring-1 ring-white/5">
+    <div className="relative h-[200px] w-full overflow-hidden rounded-xl bg-slate-50 ring-1 ring-slate-200">
       <canvas ref={canvasRef} className="block" />
     </div>
   )

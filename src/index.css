@@ -1,7 +1,7 @@
 @import 'tailwindcss';
 
 :root {
-  color-scheme: dark;
+  color-scheme: light;
 }
 
 html,
@@ -12,8 +12,8 @@ body,
 
 body {
   margin: 0;
-  background: radial-gradient(1200px 800px at 70% -10%, #1e293b 0%, #0b1120 55%, #070b16 100%);
-  color: #e2e8f0;
+  background: #ffffff;
+  color: #0f172a;
   font-family: system-ui, -apple-system, 'Hiragino Kaku Gothic ProN', 'Noto Sans JP', sans-serif;
   -webkit-font-smoothing: antialiased;
 }
@@ -24,7 +24,7 @@ input[type='range'] {
   appearance: none;
   height: 6px;
   border-radius: 9999px;
-  background: #334155;
+  background: #e2e8f0;
   outline: none;
 }
 
@@ -34,19 +34,24 @@ input[type='range']::-webkit-slider-thumb {
   width: 18px;
   height: 18px;
   border-radius: 9999px;
-  background: var(--thumb, #38bdf8);
-  border: 2px solid #0b1120;
+  background: var(--thumb, #0284c7);
+  border: 2px solid #ffffff;
   cursor: pointer;
-  box-shadow: 0 0 0 1px var(--thumb, #38bdf8);
+  box-shadow:
+    0 0 0 1px var(--thumb, #0284c7),
+    0 1px 2px rgba(15, 23, 42, 0.18);
 }
 
 input[type='range']::-moz-range-thumb {
   width: 18px;
   height: 18px;
-  border: 2px solid #0b1120;
+  border: 2px solid #ffffff;
   border-radius: 9999px;
-  background: var(--thumb, #38bdf8);
+  background: var(--thumb, #0284c7);
   cursor: pointer;
+  box-shadow:
+    0 0 0 1px var(--thumb, #0284c7),
+    0 1px 2px rgba(15, 23, 42, 0.18);
 }
 
 input[type='range']:disabled {
