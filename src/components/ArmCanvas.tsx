@@ -7,9 +7,18 @@ interface ArmCanvasProps {
   applied: number
   maxTorque: number
   saturated: boolean
+  /** Sustained external torque the user leans on the arm with [N*m]. */
+  external?: number
 }
 
-export function ArmCanvas({ theta, target, applied, maxTorque, saturated }: ArmCanvasProps) {
+export function ArmCanvas({
+  theta,
+  target,
+  applied,
+  maxTorque,
+  saturated,
+  external = 0,
+}: ArmCanvasProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const sizeRef = useRef({ w: 0, h: 0, dpr: 1 })
 
@@ -122,6 +131,34 @@ export function ArmCanvas({ theta, target, applied, maxTorque, saturated }: ArmC
     ctx.fillStyle = 'rgba(148, 163, 184, 0.7)'
     ctx.fillText('重力', cTip.x + 8, cTip.y + 24)
 
+    // External push: a tangential arrow at the tip, length ~ applied force.
+    // Positive external torque rotates the arm CCW (increasing theta).
+    const extFrac = Math.max(-1, Math.min(1, external / maxTorque))
+    if (Math.abs(extFrac) > 0.02) {
+      const tan = { x: -Math.sin(theta), y: -Math.cos(theta) }
+      const dir = Math.sign(extFrac)
+      const len = 18 + Math.abs(extFrac) * 46
+      const base = { x: cTip.x - tan.x * dir * len, y: cTip.y - tan.y * dir * len }
+      const head = { x: cTip.x, y: cTip.y }
+      ctx.strokeStyle = '#fb923c'
+      ctx.fillStyle = '#fb923c'
+      ctx.lineWidth = 4
+      ctx.lineCap = 'round'
+      ctx.beginPath()
+      ctx.moveTo(base.x, base.y)
+      ctx.lineTo(head.x, head.y)
+      ctx.stroke()
+      const ang = Math.atan2(head.y - base.y, head.x - base.x)
+      ctx.beginPath()
+      ctx.moveTo(head.x, head.y)
+      ctx.lineTo(head.x - 10 * Math.cos(ang - 0.4), head.y - 10 * Math.sin(ang - 0.4))
+      ctx.lineTo(head.x - 10 * Math.cos(ang + 0.4), head.y - 10 * Math.sin(ang + 0.4))
+      ctx.closePath()
+      ctx.fill()
+      ctx.font = '600 12px system-ui, sans-serif'
+      ctx.fillText('外力', base.x - 6, base.y - 8)
+    }
+
     // Tip joint + pivot hub.
     ctx.fillStyle = '#e0f2fe'
     ctx.beginPath()
@@ -145,7 +182,7 @@ export function ArmCanvas({ theta, target, applied, maxTorque, saturated }: ArmC
     ctx.fillStyle = '#7dd3fc'
     ctx.font = '600 15px system-ui, sans-serif'
     ctx.fillText(`${(theta * DEG).toFixed(1)}°`, pivot.x + 18, pivot.y + 30)
-  }, [theta, target, applied, maxTorque, saturated])
+  }, [theta, target, applied, maxTorque, saturated, external])
 
   return (
     <div className="relative h-[320px] w-full overflow-hidden rounded-xl bg-slate-950/60 ring-1 ring-white/5">

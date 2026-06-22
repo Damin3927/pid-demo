@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Stepper } from './components/Stepper.tsx'
 import { PidLab } from './components/PidLab.tsx'
+import { ControlLab } from './components/ControlLab.tsx'
 import { STEPS } from './steps/steps.tsx'
 
 const STORAGE_KEY = 'pid-demo-step'
@@ -28,7 +29,7 @@ export function App() {
           PID制御 インタラクティブ入門
         </h1>
         <p className="mt-1 text-sm text-slate-400">
-          ロボットアームで P → PD → PID を一段ずつ体験する
+          ロボットアームで P → PD → PID、そしてインピーダンス／アドミタンス制御まで体験する
         </p>
       </header>
 
@@ -44,6 +45,8 @@ export function App() {
               {step.body}
             </div>
           </div>
+        ) : step.kind === 'control' ? (
+          <ControlLab key={step.id} step={step} />
         ) : (
           <PidLab key={step.id} step={step} />
         )}

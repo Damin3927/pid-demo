@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react'
 import type { Gains } from '../sim/pid.ts'
+import type { ControlGains, ControlMode } from '../sim/control.ts'
 
 export interface LabStep {
   kind: 'lab'
@@ -15,6 +16,21 @@ export interface LabStep {
   antiWindup?: boolean
 }
 
+export interface ControlStep {
+  kind: 'control'
+  id: string
+  nav: string
+  title: string
+  lead: string
+  mode: ControlMode
+  active: { stiffness: boolean; damping: boolean; virtualMass: boolean; virtualDamping: boolean }
+  defaults: ControlGains
+  gravityComp: boolean
+  body: ReactNode
+  tryThis: string[]
+  watchFor: string[]
+}
+
 export interface IntroStep {
   kind: 'intro'
   id: string
@@ -23,7 +39,14 @@ export interface IntroStep {
   body: ReactNode
 }
 
-export type Step = LabStep | IntroStep
+export type Step = LabStep | ControlStep | IntroStep
+
+const CONTROL_DEFAULTS: ControlGains = {
+  stiffness: 8,
+  damping: 2,
+  virtualMass: 0.3,
+  virtualDamping: 0.6,
+}
 
 const introBody: ReactNode = (
   <div className="space-y-4 text-sm leading-relaxed text-slate-300">
@@ -217,6 +240,140 @@ export const STEPS: Step[] = [
     watchFor: [
       '速さを上げると振動・行き過ぎが出やすい',
       'Iを強めると正確だが遅く・振動的になりがち',
+    ],
+  },
+  {
+    kind: 'intro',
+    id: 'interaction-intro',
+    nav: '力制御とは',
+    title: '位置制御から「力／接触」の制御へ',
+    body: (
+      <div className="space-y-4 text-sm leading-relaxed text-slate-300">
+        <p>
+          ここまでの PID は<strong className="text-slate-100">位置制御</strong>でした。狙いは
+          「外乱を打ち消して、目標角度に<strong className="text-slate-100">硬く・正確に</strong>止める」こと。
+          押されても動かない＝硬いほど良い制御です。
+        </p>
+        <p>
+          ところが人やモノに<strong className="text-slate-100">接触</strong>するロボット（協働ロボット、
+          研磨、組立、リハビリ機器…）では話が逆になります。硬すぎると、ぶつかった瞬間に大きな力が
+          出て危険・破損につながる。ここで必要なのが、動きと力の関係＝
+          <strong className="text-emerald-300">機械インピーダンス</strong>そのものを設計する
+          <strong className="text-slate-100">力／接触の制御</strong>です。
+        </p>
+        <div className="rounded-lg bg-slate-800/50 p-4 ring-1 ring-white/5">
+          <p className="mb-2 font-semibold text-slate-100">2つのアプローチ（双対）</p>
+          <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+            <div>
+              <p className="font-mono font-bold text-sky-300">インピーダンス制御</p>
+              <p className="mt-1 text-xs text-slate-400">
+                <span className="text-slate-200">変位・速度 → 力</span> を出す。
+                力は測らない。トルク制御で「<strong className="text-slate-200">仮想バネ・ダンパ</strong>」になる。
+                バックドライブしやすい関節向き。
+              </p>
+            </div>
+            <div>
+              <p className="font-mono font-bold text-pink-300">アドミタンス制御</p>
+              <p className="mt-1 text-xs text-slate-400">
+                <span className="text-slate-200">力 → 運動</span> を作る。
+                力センサで外力を測り「<strong className="text-slate-200">仮想質量・ダンパ</strong>」の運動を生成し、
+                内側の硬い位置ループで追従。硬い（非バックドライブ）ロボット向き。
+              </p>
+            </div>
+          </div>
+        </div>
+        <p>
+          どちらも目標は「押されたら、決めた法則どおりに<strong className="text-slate-100">しなやかに従う</strong>」こと。
+          次の2章で、同じアームを<strong className="text-sky-300">バネ</strong>として、また
+          <strong className="text-pink-300">質量</strong>として振る舞わせ、
+          「外力（押す力）」スライダーで実際に押して比べてみましょう。
+        </p>
+      </div>
+    ),
+  },
+  {
+    kind: 'control',
+    id: 'impedance',
+    nav: 'インピーダンス',
+    title: 'インピーダンス制御 — 仮想バネになる',
+    lead: 'トルクで「仮想バネ＋ダンパ」を作ります。力は測らず、変位と速度から力を出す。押すと F/K だけたわむ＝コンプライアンスです。',
+    mode: 'impedance',
+    active: { stiffness: true, damping: true, virtualMass: false, virtualDamping: false },
+    defaults: CONTROL_DEFAULTS,
+    gravityComp: true,
+    body: (
+      <div className="space-y-3 text-sm leading-relaxed text-slate-300">
+        <p>
+          制御則は <span className="font-mono text-sky-200">τ = K·(θd−θ) − D·θ̇ + ĝ(θ)</span>。
+          目標まわりの<strong className="text-slate-100">仮想バネ K</strong>と
+          <strong className="text-slate-100">仮想ダンパ D</strong>、そして重力を肩代わりする
+          <strong className="text-emerald-300">重力補償 ĝ</strong>です。
+        </p>
+        <p>
+          「外力」で押すと、つり合いは <span className="font-mono text-orange-200">変位 ≈ F / K</span>。
+          つまり <strong className="text-slate-100">K が小さいほど大きくたわみ、柔らかい</strong>。
+          ロボットは力を<strong className="text-slate-100">測っていない</strong>のに、バネの法則で勝手に従います。
+        </p>
+        <p>
+          <strong className="text-amber-300">重力補償を切る</strong>と、バネだけでは重力を支えきれず
+          目標の手前で<strong className="text-amber-300">たわんで止まります</strong>（P制御の定常偏差と同じ理屈）。
+          ここで積分を足せば消せますが、それは「硬い位置制御」に逆戻り。インピーダンスでは
+          あえて積分を使わず、補償トルクで支えるのがポイントです。
+        </p>
+      </div>
+    ),
+    tryThis: [
+      'K を小さく→大きくし、同じ外力でのたわみ量の違いを見る',
+      '外力を加えたまま K を動かし、硬さ／柔らかさを体感する',
+      '重力補償を切り、目標手前でたわんで止まるのを確認',
+      'D を上げ、押して離したときの揺り戻しが収まるのを見る',
+    ],
+    watchFor: [
+      '外力スライダー＝押す力。たわみ量は F/K で決まる',
+      '制御は外力を「計測」していない（表示は計測なし）',
+      'K を上げるほど硬く、外乱に強いが接触は危険',
+    ],
+  },
+  {
+    kind: 'control',
+    id: 'admittance',
+    nav: 'アドミタンス',
+    title: 'アドミタンス制御 — 仮想質量になる',
+    lead: '外力をセンサで測り、「仮想質量＋ダンパ」の運動を作って、内側の硬い位置ループで追従します。押すと「質量 Mv」のように動きます。',
+    mode: 'admittance',
+    active: { stiffness: false, damping: false, virtualMass: true, virtualDamping: true },
+    defaults: CONTROL_DEFAULTS,
+    gravityComp: true,
+    body: (
+      <div className="space-y-3 text-sm leading-relaxed text-slate-300">
+        <p>
+          こちらは<strong className="text-slate-100">力 → 運動</strong>の向き。測った外力で
+          <span className="font-mono text-pink-200">Mv·θ̈ᵣ + Dv·θ̇ᵣ + Kv·eᵣ = F</span> の
+          仮想ダイナミクスを解いて<strong className="text-slate-100">基準軌道 θᵣ</strong>を作り、
+          それを<strong className="text-slate-100">硬い内側ループ</strong>が忠実に追います。
+        </p>
+        <p>
+          結果、アームは本来の慣性とは無関係に「<strong className="text-pink-300">質量 Mv・粘り Dv</strong>の物体」
+          として手応えを返します。<strong className="text-slate-100">Mv が小さいほど軽々と動かせ</strong>、
+          大きいほど重く鈍い。Dv を上げると手を離したとき素早く止まります。
+        </p>
+        <p>
+          押していないときは内側ループが<strong className="text-slate-100">硬く目標を保持</strong>します。
+          だからこそ、力を測れる<strong className="text-amber-300">力センサが前提</strong>で、
+          センサノイズや剛い接触には弱い——インピーダンスとは得手不得手が逆になります。
+        </p>
+      </div>
+    ),
+    tryThis: [
+      'Mv を小さく→大きくし、同じ外力での動かしやすさ（重さ）を比べる',
+      'Dv を上げ、手を離した後の止まり方が変わるのを見る',
+      '重力補償を切ると質量の手応えに重力が混ざるのを確認',
+      'インピーダンスの章と「押し心地」を比較する',
+    ],
+    watchFor: [
+      '外力は制御が「計測して使う」（表示が計測ありに変わる）',
+      'Mv が大きいほど重く・ゆっくり動く',
+      '押さなければ内側ループが硬く目標を保持する',
     ],
   },
 ]
